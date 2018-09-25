@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/hoop33/entrevista"
 	"github.com/spf13/cobra"
 )
 
@@ -17,4 +18,17 @@ func Execute() {
 		fmt.Println(err)
 		os.Exit(1)
 	}
+}
+
+func createInterview() *entrevista.Interview {
+	interview := entrevista.NewInterview()
+	/*
+		interview.ShowOutput = func(message string) {
+			fmt.Print(color.GreenString(message))
+		}
+		interview.ShowError = func(message string) {
+			color.Red(message)
+		}
+	*/
+	return interview
 }
