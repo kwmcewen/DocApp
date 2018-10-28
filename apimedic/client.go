@@ -60,10 +60,14 @@ func (c *Client) getAuthorizationHeader(apikey, secretkey string) string {
 	return fmt.Sprintf("Bearer %s:%s", apikey, c.computeHash(secretkey))
 }
 
-func (c *Client) computeHash(s string) string {
+func (c *Client) getAuthURL() string {
 	uri := fmt.Sprintf("%s/login", services[c.Mode].authUrl)
+	return uri
+}
+
+func (c *Client) computeHash(s string) string {
 	b := []byte(s)
 	h := hmac.New(md5.New, b)
-	db := h.Sum([]byte(uri))
+	db := h.Sum([]byte(c.getAuthURL()))
 	return base64.StdEncoding.EncodeToString(db)
 }
