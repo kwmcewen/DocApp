@@ -53,7 +53,15 @@ func NewClient(m Mode, hc *http.Client) *Client {
 }
 
 func (c *Client) LogIn(apikey, secretkey string) (string, error) {
-	return "", nil
+	req, err := http.NewRequest("POST", c.getAuthURL(), nil)
+	if err != nil {
+		return "", err
+	}
+	req.Header.Add("Authorization", c.getAuthorizationHeader(apikey, secretkey))
+	resp, err := c.httpClient.Do(req)
+	if err != nil {
+		return "", err
+	}
 }
 
 func (c *Client) getAuthorizationHeader(apikey, secretkey string) string {

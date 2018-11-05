@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/hoop33/entrevista"
+	"github.com/kwmcewen/docapp/apimedic"
 	"github.com/spf13/cobra"
 )
 
@@ -15,14 +16,14 @@ var loginCmd = &cobra.Command{
 		interview := createInterview()
 		interview.Questions = []entrevista.Question{
 			{
-				Key:      "userId",
-				Text:     "Enter your ApiMedic User ID",
+				Key:      "apikey",
+				Text:     "Enter your apikey",
 				Required: true,
 				Hidden:   false,
 			},
 			{
-				Key:      "password",
-				Text:     "Enter your ApiMedic Password",
+				Key:      "secretkey",
+				Text:     "Enter your secretkey",
 				Required: true,
 				Hidden:   true,
 			},
@@ -32,8 +33,11 @@ var loginCmd = &cobra.Command{
 		if err != nil {
 			panic(err)
 		}
-		fmt.Println(answers["userId"])
-		fmt.Println(answers["password"])
+		fmt.Println(answers["apikey"])
+		fmt.Println(answers["secretkey"])
+
+		ac := apimedic.NewClient(apimedic.Sandbox, newHttpClient())
+		resp, err := ac.LogIn(answers["apikey"], answers["secretkey"])
 	},
 }
 
