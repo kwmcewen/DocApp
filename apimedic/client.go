@@ -5,6 +5,7 @@ import (
 	"crypto/md5"
 	"encoding/base64"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 )
 
@@ -62,6 +63,15 @@ func (c *Client) LogIn(apikey, secretkey string) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	defer resp.Body.Close()
+	if resp.StatusCode == http.StatusOK {
+		bodyBytes, err := ioutil.ReadAll(resp.Body)
+		bodyString := string(bodyBytes)
+		return bodyString, err
+	}
+
+	return "", fmt.Errorf("Response: (%s)", resp.Status)
+
 }
 
 func (c *Client) getAuthorizationHeader(apikey, secretkey string) string {
