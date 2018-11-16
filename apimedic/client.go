@@ -54,7 +54,7 @@ func NewClient(m Mode, hc *http.Client) *Client {
 }
 
 func (c *Client) LogIn(apikey, secretkey string) (string, error) {
-	req, err := http.NewRequest("POST", c.getAuthURL(), nil)
+	req, err := http.NewRequest("POST", c.getAuthUrl(), nil)
 	if err != nil {
 		return "", err
 	}
@@ -78,7 +78,7 @@ func (c *Client) getAuthorizationHeader(apikey, secretkey string) string {
 	return fmt.Sprintf("Bearer %s:%s", apikey, c.computeHash(secretkey))
 }
 
-func (c *Client) getAuthURL() string {
+func (c *Client) getAuthUrl() string {
 	uri := fmt.Sprintf("%s/login", services[c.Mode].authUrl)
 	return uri
 }
@@ -86,6 +86,6 @@ func (c *Client) getAuthURL() string {
 func (c *Client) computeHash(s string) string {
 	b := []byte(s)
 	h := hmac.New(md5.New, b)
-	db := h.Sum([]byte(c.getAuthURL()))
-	return base64.StdEncoding.EncodeToString(db)
+	h.Write([]byte(c.getAuthUrl()))
+	return base64.StdEncoding.EncodeToString(h.Sum(nil))
 }

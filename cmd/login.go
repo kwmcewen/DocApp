@@ -33,11 +33,13 @@ var loginCmd = &cobra.Command{
 		if err != nil {
 			panic(err)
 		}
-		fmt.Println(answers["apikey"])
-		fmt.Println(answers["secretkey"])
 
 		ac := apimedic.NewClient(apimedic.Sandbox, newHttpClient())
-		resp, err := ac.LogIn(answers["apikey"], answers["secretkey"])
+		resp, err := ac.LogIn(answers["apikey"].(string), answers["secretkey"].(string))
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println(resp)
 	},
 }
 
