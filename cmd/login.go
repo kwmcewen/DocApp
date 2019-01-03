@@ -16,14 +16,14 @@ var loginCmd = &cobra.Command{
 		interview := createInterview()
 		interview.Questions = []entrevista.Question{
 			{
-				Key:      "apikey",
-				Text:     "Enter your apikey",
+				Key:      "username",
+				Text:     "Enter your username",
 				Required: true,
 				Hidden:   false,
 			},
 			{
-				Key:      "secretkey",
-				Text:     "Enter your secretkey",
+				Key:      "password",
+				Text:     "Enter your password",
 				Required: true,
 				Hidden:   true,
 			},
@@ -35,7 +35,7 @@ var loginCmd = &cobra.Command{
 		}
 
 		ac := apimedic.NewClient(apimedic.Sandbox, newHttpClient())
-		resp, err := ac.LogIn(answers["apikey"].(string), answers["secretkey"].(string))
+		resp, err := ac.LogIn(answers["username"].(string), answers["password"].(string))
 		if err != nil {
 			panic(err)
 		}

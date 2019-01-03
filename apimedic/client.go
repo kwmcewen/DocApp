@@ -20,18 +20,18 @@ const (
 )
 
 type service struct {
-	authUrl   string
-	healthUrl string
+	authURL   string
+	healthURL string
 }
 
 var services = map[Mode]service{
 	Sandbox: service{
-		authUrl:   "https://sandbox-authservice.priaid.ch",
-		healthUrl: "https://sandbox-healthservice.priaid.ch",
+		authURL:   "https://sandbox-authservice.priaid.ch",
+		healthURL: "https://sandbox-healthservice.priaid.ch",
 	},
 	Live: service{
-		authUrl:   "https://authservice.priaid.ch",
-		healthUrl: "https://healthservice.priaid.ch",
+		authURL:   "https://authservice.priaid.ch",
+		healthURL: "https://healthservice.priaid.ch",
 	},
 }
 
@@ -53,12 +53,13 @@ func NewClient(m Mode, hc *http.Client) *Client {
 	}
 }
 
-func (c *Client) LogIn(apikey, secretkey string) (string, error) {
-	req, err := http.NewRequest("POST", c.getAuthUrl(), nil)
+//LogIn logs the user into apimedic and returns the token
+func (c *Client) LogIn(username, password string) (string, error) {
+	req, err := http.NewRequest("POST", c.getAuthURL(), nil)
 	if err != nil {
 		return "", err
 	}
-	req.Header.Add("Authorization", c.getAuthorizationHeader(apikey, secretkey))
+	req.Header.Add("Authorization", c.getAuthorizationHeader(username, password))
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
 		return "", err
@@ -74,18 +75,18 @@ func (c *Client) LogIn(apikey, secretkey string) (string, error) {
 
 }
 
-func (c *Client) getAuthorizationHeader(apikey, secretkey string) string {
-	return fmt.Sprintf("Bearer %s:%s", apikey, c.computeHash(secretkey))
+func (c *Client) getAuthorizationHeader(username, password string) string {
+	return fmt.Sprintf("Bearer %s:%s", username, c.computeHash(password))
 }
 
-func (c *Client) getAuthUrl() string {
-	uri := fmt.Sprintf("%s/login", services[c.Mode].authUrl)
+func (c *Client) getAuthURL() string {
+	uri := fmt.Sprintf("%s/login", services[c.Mode].authURL)
 	return uri
 }
 
 func (c *Client) computeHash(s string) string {
 	b := []byte(s)
 	h := hmac.New(md5.New, b)
-	h.Write([]byte(c.getAuthUrl()))
+	h.Write([]byte(c.getAuthURL()))
 	return base64.StdEncoding.EncodeToString(h.Sum(nil))
 }
