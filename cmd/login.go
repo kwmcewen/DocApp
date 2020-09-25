@@ -3,7 +3,6 @@ package cmd
 import (
 	"io"
 	"os"
-	"path/filepath"
 
 	"github.com/hoop33/entrevista"
 	"github.com/kwmcewen/docapp/apimedic"
@@ -48,7 +47,7 @@ var loginCmd = &cobra.Command{
 }
 
 func WriteTokenResponseToFile(filename, data string) error {
-	file, err := os.Create(filepath.Join("/Users/kylemcewen/DocApp", filepath.Base(filename)))
+	file, err := os.Create(filename)
 	if err != nil {
 		return err
 	}
