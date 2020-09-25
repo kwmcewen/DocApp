@@ -1,6 +1,8 @@
 package apimedic
 
-import "encoding/json"
+import (
+	"encoding/json"
+)
 
 //Token is token returned from apimedic authorization service
 type Token struct {

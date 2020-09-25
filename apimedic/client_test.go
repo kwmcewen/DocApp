@@ -15,11 +15,11 @@ func TestClientShouldBeLiveWhenLiveSpecified(t *testing.T) {
 }
 
 func TestSandboxClientUrlShouldBeSandboxAuthUrlWhenAuthSpecified(t *testing.T) {
-	assert.Equal(t, "https://sandbox-authservice.priaid.ch", services[NewClient(Sandbox, nil).Mode].authUrl)
+	assert.Equal(t, "https://sandbox-authservice.priaid.ch", services[NewClient(Sandbox, nil).Mode].authURL)
 }
 
 func TestLiveClientUrlShouldBeLiveHealthUrlWhenHealthSpecified(t *testing.T) {
-	assert.Equal(t, "https://healthservice.priaid.ch", services[NewClient(Live, nil).Mode].healthUrl)
+	assert.Equal(t, "https://healthservice.priaid.ch", services[NewClient(Live, nil).Mode].healthURL)
 }
 
 func TestGetAuthUrlShouldReturnAuthUrl(t *testing.T) {
@@ -27,5 +27,5 @@ func TestGetAuthUrlShouldReturnAuthUrl(t *testing.T) {
 }
 
 func TestComputeHashShouldComputeProperHash(t *testing.T) {
-	assert.Equal(t, "aHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaC9sb2dpbkojquyGPxvQl01Og5ENPhc=", NewClient(Sandbox, nil).computeHash("abc"))
+	assert.Equal(t, "xhEmHyH1FnT2K9T2DScoMw==", NewClient(Sandbox, nil).computeHash("abc"))
 }

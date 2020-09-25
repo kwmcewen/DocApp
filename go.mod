@@ -1,5 +1,7 @@
 module github.com/kwmcewen/docapp
 
+go 1.15
+
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/hoop33/entrevista v0.0.0-20170209210745-419a1a2be554

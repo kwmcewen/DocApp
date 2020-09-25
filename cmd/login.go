@@ -1,7 +1,9 @@
 package cmd
 
 import (
-	"fmt"
+	"io"
+	"os"
+	"path/filepath"
 
 	"github.com/hoop33/entrevista"
 	"github.com/kwmcewen/docapp/apimedic"
@@ -39,8 +41,24 @@ var loginCmd = &cobra.Command{
 		if err != nil {
 			panic(err)
 		}
-		fmt.Println(resp)
+
+		WriteTokenResponseToFile("token.txt", resp)
+
 	},
+}
+
+func WriteTokenResponseToFile(filename, data string) error {
+	file, err := os.Create(filepath.Join("/Users/kylemcewen/DocApp", filepath.Base(filename)))
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	_, err = io.WriteString(file, data)
+	if err != nil {
+		return err
+	}
+	return file.Sync()
 }
 
 func init() {
